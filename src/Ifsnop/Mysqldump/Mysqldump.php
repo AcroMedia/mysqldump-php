@@ -960,10 +960,8 @@ class Mysqldump {
     $colStmt = $this->getColumnStmt($tableName);
     // colNames is used to get the name of the columns when using
     // complete-insert.
-    if ($this->dumpSettings['complete-insert']) {
-      $colNames = $this->getColumnNames($tableName);
-    }
-    $colNamesString = implode(", ", $colNames);
+    $colNames = $this->dumpSettings['complete-insert'] ? $this->getColumnNames($tableName) : array();
+    $colNames = implode(", ", $colNames);
 
     $stmt = "SELECT " . implode(",", $colStmt) . " FROM `$tableName`";
 
@@ -984,7 +982,7 @@ class Mysqldump {
         if ($this->dumpSettings['complete-insert']) {
           $lineSize += $this->compressManager->write(
             "INSERT$ignore INTO `$tableName` (" .
-            $colNamesString .
+            $colNames .
             ") VALUES (" . $vals . ")"
           );
         }
