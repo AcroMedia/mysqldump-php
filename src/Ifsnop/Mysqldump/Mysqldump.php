@@ -865,11 +865,11 @@ class Mysqldump {
    *   Values.
    */
   private function prepareColumnValues($tableName, $row) {
-    $ret         = '';
+    $ret = '';
     $columnTypes = $this->tableColumnTypes[$tableName];
     foreach ($row as $colName => $colValue) {
       $colValue = $this->hookTransformColumnValue($tableName, $colName, $colValue, $row);
-      $ret = $this->escape($colValue, $columnTypes[$colName]) . ',';
+      $ret .= $this->escape($colValue, $columnTypes[$colName]) . ',';
     }
     $ret = rtrim($ret, ',');
 
@@ -960,7 +960,7 @@ class Mysqldump {
     $colStmt = $this->getColumnStmt($tableName);
     // colNames is used to get the name of the columns when using
     // complete-insert.
-    $colNames = $this->dumpSettings['complete-insert'] ? $this->getColumnNames($tableName) : array();
+    $colNames = $this->dumpSettings['complete-insert'] ? $this->getColumnNames($tableName) : [];
     $colNames = implode(", ", $colNames);
 
     $stmt = "SELECT " . implode(",", $colStmt) . " FROM `$tableName`";
